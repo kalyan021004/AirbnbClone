@@ -1,7 +1,17 @@
 <nav class="navbar navbar-expand-md bg-light border-bottom sticky-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/main"><i class="fa-regular fa-compass"></i> Wander</a>
+    <a class="navbar-brand" href="/main">
+      <i class="fa-regular fa-compass"></i> Airbnb
+    </a>
 
+    <% if (currentUser) { %>
+      <!-- 🔍 Mobile Search Icon (visible only on small screens) -->
+      <button class="btn d-md-none me-2 ms-auto" data-bs-toggle="collapse" data-bs-target="#searchCollapse">
+        <i class="fas fa-search"></i>
+      </button>
+    <% } %>
+
+    <!-- 🍔 Toggler -->
     <button
       class="navbar-toggler"
       type="button"
@@ -14,19 +24,50 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
+    <% if (currentUser) { %>
+      <!-- 📱 Mobile Search Collapse -->
+      <div class="collapse" id="searchCollapse">
+        <form class="d-flex p-2" action="/listings/search" method="GET">
+          <input
+            class="form-control me-2"
+            type="search"
+            placeholder="Search listings"
+            name="q"
+            aria-label="Search"
+          />
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    <% } %>
+
+    <!-- 👇 Main Nav Items -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <div class="navbar-nav">
+      <div class="navbar-nav me-auto">
         <a href="/listings" class="nav-link">All Places</a>
         <a href="/listings/new" class="nav-link">Add New</a>
       </div>
 
-      <!-- Right-side auth links -->
+      <% if (currentUser) { %>
+        <!-- 🖥️ Search Bar in Center for md+ screens -->
+        <form class="d-none d-md-flex mx-auto" style="max-width: 400px;" action="/listings/search" method="GET">
+          <input
+            class="form-control me-2"
+            type="search"
+            placeholder="Search listings"
+            name="q"
+            aria-label="Search"
+          />
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      <% } %>
+
+      <!-- 👤 Auth Buttons -->
       <div class="navbar-nav ms-auto">
         <% if (!currentUser) { %>
           <a href="/signin" class="nav-link">Sign In</a>
         <% } else { %>
           <span class="nav-link disabled">Welcome!</span>
-          <a href="/logout" class="nav-link">Sign Out</a>
+          <a href="/signup" class="nav-link">Sign Out</a>
         <% } %>
       </div>
     </div>

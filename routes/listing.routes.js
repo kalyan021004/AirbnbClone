@@ -1,6 +1,7 @@
 const express = require("express");
 const Listing = require("../models/listings");
 const { isLoggedIn, isOwner } = require("../middleware");
+const escapeRegExp = require("lodash.escaperegexp"); // for safe regex (optional)
 
 const router = express.Router();
 
@@ -19,6 +20,26 @@ router.get("/listings", async (req, res) => {
 router.get("/listings/new", isLoggedIn, (req, res) => {
   res.render("listings/new.ejs");
 });
+router.get("/listings/search", async (req, res) => {
+  const query = req.query.q;
+
+  if (!query) {
+    req.flash("error", "Please enter a search term.");
+    return res.redirect("/listings");
+  }
+
+ const listings = await Listing.find({
+  $or: [
+    { title: { $regex: escapeRegExp(query), $options: "i" } },
+    { description: { $regex: escapeRegExp(query), $options: "i" } },
+    { location: { $regex: escapeRegExp(query), $options: "i" } }
+  ]
+});
+
+
+  res.render("listings/index.ejs", { allListings: listings });
+});
+
 
 // Show specific listing
 router.get("/listings/:id", async (req, res) => {
@@ -66,5 +87,6 @@ router.delete("/listings/:id", isLoggedIn, isOwner, async (req, res) => {
   req.flash("success", "Successfully deleted the listing!");
   res.redirect("/listings");
 });
+
 
 module.exports = router;
