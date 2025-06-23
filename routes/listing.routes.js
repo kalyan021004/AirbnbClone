@@ -53,7 +53,7 @@ router.get("/listings/:id", async (req, res) => {
   res.render("listings/show.ejs", { listing });
 });
 
-router.post('/listings', isLoggedIn, upload.single('image'), async (req, res) => {
+router.post('/listings', isLoggedIn, async (req, res) => {
   try {
     console.log("Uploaded file info:", JSON.stringify(req.file, null, 2));
 
