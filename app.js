@@ -23,7 +23,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
-      mongoUrl: mongoUrl,
+      mongoUrl: MONGO_URL,
       ttl: 24 * 60 * 60, // 1 day session expiration
     }),
     cookie: {
