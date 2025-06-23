@@ -19,17 +19,15 @@ const PORT = process.env.PORT || 8080;
 
 app.use(
   session({
-    secret: SESSION_SECRET,
+    secret: "yourSecretKey", // use environment variable in production
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
-      mongoUrl: MONGO_URL,
-      collectionName: "sessions",
-      ttl: 14 * 24 * 60 * 60, // = 14 days session expiration
+      mongoUrl: mongoUrl,
+      ttl: 24 * 60 * 60, // 1 day session expiration
     }),
     cookie: {
-      secure: false, // true if using HTTPS, false for local dev
-      maxAge: 14 * 24 * 60 * 60 * 1000, // 14 days in ms
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
     },
   })
 );
