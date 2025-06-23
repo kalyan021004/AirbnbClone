@@ -2,9 +2,6 @@ const express = require("express");
 const Listing = require("../models/listings");
 const { isLoggedIn, isOwner } = require("../middleware");
 const escapeRegExp = require("lodash.escaperegexp");
-const upload =require("../utils/cloudinary")
-const multer = require("multer");
-const { storage } = require("../utils/cloudinary"); // Make sure this file exists
 
 const router = express.Router();
 
