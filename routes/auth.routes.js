@@ -32,28 +32,34 @@ router.post("/signup", async (req, res) => {
 });
 
 // Handle Signin
-router.post("/signin", async (req, res) => {
-  const { username, password } = req.body;
-  const user = await User.findOne({ username });
-
-  if (!user) {
-    req.flash("error", "Invalid username.");
-    return res.redirect("/signin");
+// In your auth routes file
+router.post('/signin', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    
+    // Find user and validate password
+    const user = await User.findOne({ 
+      $or: [{ username }, { email: username }] 
+    });
+    
+    if (user && await bcrypt.compare(password, user.password)) {
+      // Set session
+      req.session.userId = user._id;
+      req.flash('success', 'Welcome back!');
+      res.redirect('/main');
+    } else {
+      req.flash('error', 'Invalid credentials');
+      res.redirect('/signin');
+    }
+  } catch (error) {
+    console.error('Login error:', error);
+    req.flash('error', 'Login failed');
+    res.redirect('/signin');
   }
-
-  const valid = await bcrypt.compare(password, user.password);
-  if (!valid) {
-    req.flash("error", "Incorrect password.");
-    return res.redirect("/signin");
-  }
-
-  req.session.userId = user._id;
-  req.flash("success", `Welcome back, ${user.username}!`);
-  res.redirect("/main");
 });
 
 // Logout Route
-router.get("/logout", (req, res) => {
+router.post("/logout", (req, res) => {
   req.flash("success", "You have been logged out.");
   req.session.destroy(() => {
     res.redirect("/");

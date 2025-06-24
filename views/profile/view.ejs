@@ -1,0 +1,9 @@
+<% layout('layouts/boilerplate.ejs') %>
+
+<div class="container mt-4">
+  <h2>Your Profile</h2>
+  <p><strong>Username:</strong> <%= user.username %></p>
+  <p><strong>Email:</strong> <%= user.email %></p>
+  <p><strong>Bio:</strong> <%= user.bio || 'N/A' %></p>
+  <a href="/profile/edit" class="btn btn-warning mt-3">Edit Profile</a>
+</div>

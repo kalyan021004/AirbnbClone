@@ -6,19 +6,25 @@ const escapeRegExp = require("lodash.escaperegexp");
 const router = express.Router();
 
 // Index Route
-router.get("/main", isLoggedIn, (req, res) => {
-  res.render("listings/main.ejs");
+router.get('/main', isLoggedIn, (req, res) => {
+  console.log('Current user:', req.user);
+  res.render('listings/main', { currentUser: req.user });
 });
 
 // Show all listings
 router.get("/listings", async (req, res) => {
   const allListings = await Listing.find({});
-  res.render("listings/index.ejs", { allListings });
+  res.render("listings/index.ejs", { 
+    allListings, 
+    currentUser: req.user 
+  });
 });
 
 // New listing form
 router.get("/listings/new", isLoggedIn, (req, res) => {
-  res.render("listings/new.ejs");
+  res.render("listings/new.ejs", { 
+    currentUser: req.user 
+  });
 });
 
 // Search listings
@@ -37,7 +43,10 @@ router.get("/listings/search", async (req, res) => {
     ]
   });
 
-  res.render("listings/index.ejs", { allListings: listings });
+  res.render("listings/index.ejs", { 
+    allListings: listings, 
+    currentUser: req.user 
+  });
 });
 
 // Show specific listing
@@ -50,7 +59,10 @@ router.get("/listings/:id", async (req, res) => {
     })
     .populate("author");
 
-  res.render("listings/show.ejs", { listing });
+  res.render("listings/show.ejs", { 
+    listing, 
+    currentUser: req.user 
+  });
 });
 
 router.post('/listings', isLoggedIn, async (req, res) => {
@@ -77,7 +89,10 @@ router.post('/listings', isLoggedIn, async (req, res) => {
 router.get("/listings/:id/edit", isLoggedIn, isOwner, async (req, res) => {
   let { id } = req.params;
   const listing = await Listing.findById(id);
-  res.render("listings/edit.ejs", { listing });
+  res.render("listings/edit.ejs", { 
+    listing, 
+    currentUser: req.user 
+  });
 });
 
 // Update a listing

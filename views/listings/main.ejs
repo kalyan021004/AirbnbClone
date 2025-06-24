@@ -1,30 +1,148 @@
 <% layout('layouts/boilerplate.ejs') %>
 
-
-<div class="hero-section text-center p-5 bg-light rounded shadow mt-4">
-  <h1 class="display-4 fw-bold">Welcome to Airbnb</h1>
-  <p class="lead mt-3">
-    Discover hidden gems, book unique stays, and make unforgettable memories. Wander connects travelers with hosts around the globe.
-  </p>
-  <a href="/listings" class="btn btn-danger btn-lg mt-4">Explore Listings</a>
-</div>
-
-<div class="container mt-5">
-  <div class="row text-center">
-    <div class="col-md-4 mb-4">
-      <i class="fa-solid fa-globe fa-2x mb-3"></i>
-      <h4>Global Stays</h4>
-      <p>Choose from thousands of locations worldwide and enjoy personalized experiences.</p>
-    </div>
-    <div class="col-md-4 mb-4">
-      <i class="fa-solid fa-heart fa-2x mb-3"></i>
-      <h4>Comfort & Style</h4>
-      <p>Every listing is verified for quality and comfort to ensure a perfect stay.</p>
-    </div>
-    <div class="col-md-4 mb-4">
-      <i class="fa-solid fa-user-shield fa-2x mb-3"></i>
-      <h4>Trusted Community</h4>
-      <p>Backed by real reviews, support, and security so you can travel worry-free.</p>
+<!-- Hero Section -->
+<div class="hero-section text-center py-5 bg-gradient-to-r from-pink-500 to-red-500 text-white rounded shadow-lg mt-4" 
+     style="background: linear-gradient(135deg, #e91e63 0%, #f44336 100%);">
+  <div class="container">
+    <h1 class="display-3 fw-bold mb-4">
+      <i class="fa-regular fa-compass me-3"></i>
+      Welcome to Airbnb
+    </h1>
+    <p class="lead fs-4 mb-4 mx-auto" style="max-width: 600px;">
+      Discover amazing places to stay, connect with local hosts, and create unforgettable travel experiences around the world.
+    </p>
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+      <a href="/listings" class="btn btn-light btn-lg px-4 py-3 fw-semibold">
+        <i class="fas fa-search me-2"></i>Explore Listings
+      </a>
+      <% if (currentUser) { %>
+        <a href="/listings/new" class="btn btn-outline-light btn-lg px-4 py-3 fw-semibold">
+          <i class="fas fa-plus me-2"></i>Host Your Space
+        </a>
+      <% } %>
     </div>
   </div>
 </div>
+
+<!-- Features Section -->
+<div class="container my-5 py-4">
+  <div class="row text-center g-4">
+    <div class="col-md-4">
+      <div class="feature-card h-100 p-4 border-0 shadow-sm rounded-3 bg-white">
+        <div class="feature-icon mb-3">
+          <i class="fa-solid fa-globe text-primary" style="font-size: 3rem;"></i>
+        </div>
+        <h4 class="fw-bold mb-3">Global Destinations</h4>
+        <p class="text-muted">
+          Choose from millions of unique accommodations in over 220 countries and regions worldwide.
+        </p>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="feature-card h-100 p-4 border-0 shadow-sm rounded-3 bg-white">
+        <div class="feature-icon mb-3">
+          <i class="fa-solid fa-heart text-danger" style="font-size: 3rem;"></i>
+        </div>
+        <h4 class="fw-bold mb-3">Comfort & Quality</h4>
+        <p class="text-muted">
+          Every listing is carefully vetted to ensure exceptional quality, cleanliness, and guest satisfaction.
+        </p>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="feature-card h-100 p-4 border-0 shadow-sm rounded-3 bg-white">
+        <div class="feature-icon mb-3">
+          <i class="fa-solid fa-user-shield text-success" style="font-size: 3rem;"></i>
+        </div>
+        <h4 class="fw-bold mb-3">Trusted & Secure</h4>
+        <p class="text-muted">
+          Travel with confidence thanks to verified reviews, 24/7 support, and comprehensive safety measures.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Quick Stats Section -->
+<div class="bg-light py-5 mt-5">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-6 col-md-3 mb-4">
+        <h3 class="display-6 fw-bold text-primary mb-2">4M+</h3>
+        <p class="text-muted mb-0">Hosts worldwide</p>
+      </div>
+      <div class="col-6 col-md-3 mb-4">
+        <h3 class="display-6 fw-bold text-primary mb-2">220+</h3>
+        <p class="text-muted mb-0">Countries & regions</p>
+      </div>
+      <div class="col-6 col-md-3 mb-4">
+        <h3 class="display-6 fw-bold text-primary mb-2">1B+</h3>
+        <p class="text-muted mb-0">Guest arrivals</p>
+      </div>
+      <div class="col-6 col-md-3 mb-4">
+        <h3 class="display-6 fw-bold text-primary mb-2">100K+</h3>
+        <p class="text-muted mb-0">Cities worldwide</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Call-to-Action Section -->
+<% if (!currentUser) { %>
+<div class="container my-5 py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+      <div class="cta-section p-5 bg-primary text-white rounded-4">
+        <h2 class="fw-bold mb-3">Ready to Start Your Journey?</h2>
+        <p class="lead mb-4">Join millions of travelers who trust Airbnb for their perfect getaway.</p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+          <a href="/signup" class="btn btn-light btn-lg px-4 py-3 fw-semibold">
+            <i class="fas fa-user-plus me-2"></i>Sign Up Today
+          </a>
+          <a href="/signin" class="btn btn-outline-light btn-lg px-4 py-3 fw-semibold">
+            <i class="fas fa-sign-in-alt me-2"></i>Sign In
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% } %>
+
+<style>
+.feature-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+}
+
+.cta-section {
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+}
+
+.hero-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.1);
+  z-index: 1;
+}
+
+.hero-section > .container {
+  position: relative;
+  z-index: 2;
+}
+</style>

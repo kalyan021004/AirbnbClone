@@ -1,0 +1,23 @@
+<% layout('layouts/boilerplate.ejs') %>
+
+<div class="container mt-4">
+  <h2>Your Favorite Listings</h2>
+  <% if (favorites.length === 0) { %>
+    <p>You have no favorites yet.</p>
+  <% } else { %>
+    <div class="row">
+      <% favorites.forEach(fav => { %>
+        <div class="col-md-4 mb-3">
+          <div class="card">
+            <img src="<%= fav.image.url %>" class="card-img-top">
+            <div class="card-body">
+              <h5 class="card-title"><%= fav.title %></h5>
+              <p class="card-text"><%= fav.location %></p>
+              <a href="/listings/<%= fav._id %>" class="btn btn-primary btn-sm">View</a>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</div>

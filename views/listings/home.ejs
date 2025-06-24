@@ -1,14 +1,158 @@
 <% layout('layouts/boilerplate.ejs') %>
 
 <!-- Hero Section -->
-<section class="bg-primary text-white text-center d-flex align-items-center" style="height: 70vh;">
-  <div class="container">
-    <h1 class="display-4 fw-bold mb-3">Discover Your Next Adventure</h1>
-    <p class="lead mb-4">
+<section 
+  class="d-flex align-items-center justify-content-center text-center text-white" 
+  style="
+    height: 70vh; 
+    background: linear-gradient(135deg, #FF385C 0%, #E61E4D 100%);
+    padding: 0 1rem;
+  ">
+  <div class="container" style="max-width: 600px;">
+    <h1 class="display-3 fw-bold mb-3 hero-fade-in" style="text-shadow: 0 2px 8px rgba(0,0,0,0.3);">
+      Discover Your Next Adventure
+    </h1>
+    <p class="lead mb-4 hero-fade-in delay-1" style="text-shadow: 0 1px 6px rgba(0,0,0,0.25); font-size: 1.4rem;">
       Explore unique places to stay and unforgettable experiences around the world.
     </p>
-    <form action="/signup">
-<button class="btn btn-lg btn-light fw-bold px-5">Get Started</button>
+    <form action="/signup" class="hero-fade-in delay-2">
+      <button 
+        type="submit" 
+        class="btn btn-light btn-lg fw-bold px-5 py-3 shadow-sm"
+        style="transition: transform 0.3s ease;">
+        Get Started
+      </button>
     </form>
   </div>
 </section>
+
+<!-- Featured Details Section -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row g-4 text-center">
+      <!-- Popular Questions -->
+      <div class="col-md-4">
+        <div class="card shadow-sm h-100 border-0 featured-card">
+          <div class="card-body d-flex flex-column align-items-center">
+            <div class="icon-wrapper mb-3 text-danger">
+              <i class="fas fa-question-circle fa-3x animated-icon"></i>
+            </div>
+            <h5 class="card-title fw-bold mb-3">Popular Questions</h5>
+            <ul class="list-unstyled text-muted small text-start">
+              <li>• How do I book a stay?</li>
+              <li>• What is the cancellation policy?</li>
+              <li>• How do I become a host?</li>
+              <li>• Are pets allowed?</li>
+              <li>• How do I contact my host?</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Featured Destinations -->
+      <div class="col-md-4">
+        <div class="card shadow-sm h-100 border-0 featured-card">
+          <div class="card-body d-flex flex-column align-items-center">
+            <div class="icon-wrapper mb-3 text-danger">
+              <i class="fas fa-map-marker-alt fa-3x animated-icon"></i>
+            </div>
+            <h5 class="card-title fw-bold mb-3">Featured Destinations</h5>
+            <ul class="list-unstyled text-muted small text-start">
+              <li>• Paris, France</li>
+              <li>• Tokyo, Japan</li>
+              <li>• New York City, USA</li>
+              <li>• Bali, Indonesia</li>
+              <li>• Sydney, Australia</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Why Choose Us -->
+      <div class="col-md-4">
+        <div class="card shadow-sm h-100 border-0 featured-card">
+          <div class="card-body d-flex flex-column align-items-center">
+            <div class="icon-wrapper mb-3 text-danger">
+              <i class="fas fa-thumbs-up fa-3x animated-icon"></i>
+            </div>
+            <h5 class="card-title fw-bold mb-3">Why Choose Us?</h5>
+            <ul class="list-unstyled text-muted small text-start">
+              <li>• Verified and trusted hosts</li>
+              <li>• 24/7 Customer Support</li>
+              <li>• Secure payments and bookings</li>
+              <li>• Unique stays worldwide</li>
+              <li>• Easy cancellation options</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Hero fade-in animations */
+  .hero-fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUp 0.8s forwards;
+  }
+  .hero-fade-in.delay-1 {
+    animation-delay: 0.3s;
+  }
+  .hero-fade-in.delay-2 {
+    animation-delay: 0.6s;
+  }
+
+  @keyframes fadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Featured cards */
+  .featured-card {
+    border-radius: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: default;
+    background: white;
+  }
+
+  .featured-card:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 20px 40px rgba(230, 30, 77, 0.3);
+  }
+
+  /* Icons with pulse animation */
+  .animated-icon {
+    color: #FF385C;
+    animation: pulse 2s infinite ease-in-out;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+
+  /* Adjust list padding */
+  ul.text-start {
+    padding-left: 1.2rem;
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 767px) {
+    .hero-fade-in {
+      animation-duration: 0.6s;
+    }
+
+    .featured-card:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    ul.text-start {
+      padding-left: 1rem;
+    }
+  }
+</style>
