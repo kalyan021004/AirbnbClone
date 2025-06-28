@@ -1,38 +1,38 @@
 <% layout('layouts/boilerplate.ejs') %>
 
+<body>
+
 <section class="hero-section d-flex align-items-center justify-content-center text-center text-white">
-  <div class="container" style="max-width: 600px;">
-    <h1 class="display-3 fw-bold mb-3 hero-fade-in" style="text-shadow: 0 2px 8px rgba(0,0,0,0.3);">
+  <div class="container hero-container">
+    <h1 class="hero-title hero-fade-in">
       Discover Your Next Adventure
     </h1>
-    <p class="lead mb-4 hero-fade-in delay-1" style="text-shadow: 0 1px 6px rgba(0,0,0,0.25); font-size: 1.4rem;">
+    <p class="hero-subtitle hero-fade-in delay-1">
       Explore unique places to stay and unforgettable experiences around the world.
     </p>
     <form action="/signup" class="hero-fade-in delay-2">
       <button 
         type="submit" 
-        class="btn btn-light btn-lg fw-bold px-5 py-3 shadow-sm"
-        style="transition: transform 0.3s ease;">
+        class="btn btn-light btn-cta shadow-sm">
         Get Started
       </button>
     </form>
   </div>
 </section>
 
-
 <!-- Featured Details Section -->
-<section class="py-5 bg-light">
+<section class="py-5 bg-light features-section">
   <div class="container">
     <div class="row g-4 text-center">
       <!-- Popular Questions -->
-      <div class="col-md-4">
+      <div class="col-lg-4 col-md-6 col-12">
         <div class="card shadow-sm h-100 border-0 featured-card">
           <div class="card-body d-flex flex-column align-items-center">
             <div class="icon-wrapper mb-3 text-danger">
               <i class="fas fa-question-circle fa-3x animated-icon"></i>
             </div>
             <h5 class="card-title fw-bold mb-3">Popular Questions</h5>
-            <ul class="list-unstyled text-muted small text-start">
+            <ul class="list-unstyled text-muted small text-start feature-list">
               <li>• How do I book a stay?</li>
               <li>• What is the cancellation policy?</li>
               <li>• How do I become a host?</li>
@@ -44,14 +44,14 @@
       </div>
 
       <!-- Featured Destinations -->
-      <div class="col-md-4">
+      <div class="col-lg-4 col-md-6 col-12">
         <div class="card shadow-sm h-100 border-0 featured-card">
           <div class="card-body d-flex flex-column align-items-center">
             <div class="icon-wrapper mb-3 text-danger">
               <i class="fas fa-map-marker-alt fa-3x animated-icon"></i>
             </div>
             <h5 class="card-title fw-bold mb-3">Featured Destinations</h5>
-            <ul class="list-unstyled text-muted small text-start">
+            <ul class="list-unstyled text-muted small text-start feature-list">
               <li>• Paris, France</li>
               <li>• Tokyo, Japan</li>
               <li>• New York City, USA</li>
@@ -63,14 +63,14 @@
       </div>
 
       <!-- Why Choose Us -->
-      <div class="col-md-4">
+      <div class="col-lg-4 col-md-12 col-12">
         <div class="card shadow-sm h-100 border-0 featured-card">
           <div class="card-body d-flex flex-column align-items-center">
             <div class="icon-wrapper mb-3 text-danger">
               <i class="fas fa-thumbs-up fa-3x animated-icon"></i>
             </div>
             <h5 class="card-title fw-bold mb-3">Why Choose Us?</h5>
-            <ul class="list-unstyled text-muted small text-start">
+            <ul class="list-unstyled text-muted small text-start feature-list">
               <li>• Verified and trusted hosts</li>
               <li>• 24/7 Customer Support</li>
               <li>• Secure payments and bookings</li>
@@ -85,87 +85,330 @@
 </section>
 
 <style>
-  .hero-section {
-  height: 70vh;
+/* Base hero section styles */
+.hero-section {
+  min-height: 70vh;
   background: linear-gradient(135deg, #FF385C 0%, #E61E4D 100%);
-  padding: 0 1rem;
+  padding: 2rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Smaller hero section on small screens */
+.hero-container {
+  max-width: 700px;
+  width: 100%;
+}
+
+/* Hero typography - responsive */
+.hero-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  margin-bottom: 2rem;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.25);
+  line-height: 1.4;
+  max-width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* CTA Button - responsive */
+.btn-cta {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-weight: 700;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(2rem, 4vw, 3rem);
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  border: none;
+  background: white;
+  color: #FF385C;
+}
+
+.btn-cta:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  background: #f8f9fa;
+  color: #E61E4D;
+}
+
+/* Hero animations */
+.hero-fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUp 0.8s forwards;
+}
+
+.hero-fade-in.delay-1 {
+  animation-delay: 0.3s;
+}
+
+.hero-fade-in.delay-2 {
+  animation-delay: 0.6s;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Features section */
+.features-section {
+  padding: clamp(3rem, 5vw, 5rem) 0;
+}
+
+/* Featured cards - responsive */
+.featured-card {
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  cursor: default;
+  background: white;
+  min-height: 300px;
+  margin-bottom: 1.5rem;
+}
+
+.featured-card .card-body {
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.featured-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(230, 30, 77, 0.15);
+}
+
+/* Icons */
+.animated-icon {
+  color: #FF385C;
+  animation: pulse 2s infinite ease-in-out;
+  font-size: clamp(2rem, 4vw, 3rem) !important;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.icon-wrapper {
+  margin-bottom: clamp(1rem, 2vw, 1.5rem);
+}
+
+/* Card titles */
+.card-title {
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  margin-bottom: clamp(1rem, 2vw, 1.5rem);
+}
+
+/* Feature lists */
+.feature-list {
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  line-height: 1.8;
+  padding-left: 0;
+}
+
+.feature-list li {
+  margin-bottom: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+/* Tablet optimizations */
+@media (max-width: 992px) {
+  .hero-section {
+    min-height: 65vh;
+    padding: 2rem 1rem;
+  }
+  
+  .features-section {
+    padding: 3rem 0;
+  }
+}
+
+/* Mobile optimizations */
 @media (max-width: 768px) {
   .hero-section {
-    height: 50vh;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    background-attachment: scroll;
+  }
+  
+  .hero-container {
+    max-width: 100%;
+    padding: 0 0.5rem;
+  }
+  
+  .hero-title {
+    margin-bottom: 1.5rem;
+    word-wrap: break-word;
+    hyphens: auto;
+  }
+  
+  .hero-subtitle {
+    margin-bottom: 2rem;
+    max-width: 100%;
+  }
+  
+  .btn-cta {
+    width: 90%;
+    max-width: 280px;
+    margin: 0 auto;
+    display: block;
+  }
+  
+  .featured-card {
+    margin-bottom: 1.5rem;
+    border-radius: 15px;
+  }
+  
+  .featured-card .card-body {
+    padding: 2rem 1.5rem;
+  }
+  
+  .hero-fade-in {
+    animation-duration: 0.6s;
+  }
+  
+  /* Ensure proper spacing */
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
   }
 }
 
+/* Extra small devices */
 @media (max-width: 480px) {
   .hero-section {
-    height: 40vh;
+    min-height: 100vh;
+    padding: 1.5rem 0.75rem;
+  }
+  
+  .hero-container {
+    padding: 0 0.5rem;
+    max-width: 100%;
+  }
+  
+  .hero-title {
+    font-size: 2.2rem;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.1rem;
+    line-height: 1.3;
+    margin-bottom: 1.5rem;
+    padding: 0 0.5rem;
+  }
+  
+  .btn-cta {
+    width: 85%;
+    max-width: 250px;
+    font-size: 1rem;
+    padding: 0.9rem 1.5rem;
+  }
+  
+  .features-section {
+    padding: 2.5rem 0;
+  }
+  
+  .featured-card {
+    margin-bottom: 1.25rem;
+    border-radius: 12px;
+  }
+  
+  .featured-card .card-body {
+    padding: 1.75rem 1.25rem;
+  }
+  
+  .card-title {
+    font-size: 1.15rem;
+    margin-bottom: 1rem;
+  }
+  
+  .feature-list {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  
+  .feature-list li {
+    margin-bottom: 0.4rem;
+  }
+  
+  .animated-icon {
+    font-size: 2.2rem !important;
+  }
+  
+  /* Disable hover effects on touch devices */
+  .featured-card:hover {
+    transform: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  
+  .btn-cta:hover {
+    transform: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  }
+  
+  /* Better container spacing */
+  .container {
+    padding-left: 12px;
+    padding-right: 12px;
+    max-width: 100%;
+  }
+  
+  /* Ensure no horizontal overflow */
+  body {
+    overflow-x: hidden;
+  }
+  
+  .row {
+    margin-left: -8px;
+    margin-right: -8px;
+  }
+  
+  .row > * {
+    padding-left: 8px;
+    padding-right: 8px;
   }
 }
 
-  /* Hero fade-in animations */
-  .hero-fade-in {
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeUp 0.8s forwards;
+/* Large screens */
+@media (min-width: 1200px) {
+  .hero-section {
+    min-height: 80vh;
   }
-  .hero-fade-in.delay-1 {
-    animation-delay: 0.3s;
+  
+  .features-section {
+    padding: 6rem 0;
   }
-  .hero-fade-in.delay-2 {
-    animation-delay: 0.6s;
+  
+  .featured-card .card-body {
+    padding: 3rem;
   }
+}
 
-  @keyframes fadeUp {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .hero-fade-in,
+  .animated-icon,
+  .featured-card,
+  .btn-cta {
+    animation: none;
+    transition: none;
   }
+}
 
-  /* Featured cards */
-  .featured-card {
-    border-radius: 15px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: default;
-    background: white;
+/* Print styles */
+@media print {
+  .hero-section {
+    background: #FF385C !important;
+   
   }
-
-  .featured-card:hover {
-    transform: translateY(-10px) scale(1.05);
-    box-shadow: 0 20px 40px rgba(230, 30, 77, 0.3);
-  }
-
-  /* Icons with pulse animation */
-  .animated-icon {
-    color: #FF385C;
-    animation: pulse 2s infinite ease-in-out;
-  }
-
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.15); }
-  }
-
-  /* Adjust list padding */
-  ul.text-start {
-    padding-left: 1.2rem;
-  }
-
-  /* Responsive tweaks */
-  @media (max-width: 767px) {
-    .hero-fade-in {
-      animation-duration: 0.6s;
-    }
-
-    .featured-card:hover {
-      transform: none;
-      box-shadow: none;
-    }
-
-    ul.text-start {
-      padding-left: 1rem;
-    }
-  }
+}
 </style>

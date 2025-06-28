@@ -1,41 +1,237 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
     />
     <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-      rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        rel="stylesheet"
     />
     <link rel="stylesheet" href="/css/style.css" />
-  </head>
+    
+    <!-- Responsive CSS -->
+    <style>
+        /* Base responsive styles */
+        * {
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+        }
+        
+        /* Alert responsive styles */
+        .alert {
+            margin: 0;
+            border-radius: 0;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 1.5rem);
+        }
+        
+        .btn-close {
+            font-size: clamp(0.8rem, 1.5vw, 1rem);
+        }
+        
+        /* Main container responsive */
+        .container {
+            max-width: 100%;
+            padding-left: clamp(0.75rem, 2vw, 1rem);
+            padding-right: clamp(0.75rem, 2vw, 1rem);
+        }
+        
+        .my-4 {
+            margin-top: clamp(1rem, 3vw, 2rem) !important;
+            margin-bottom: clamp(1rem, 3vw, 2rem) !important;
+        }
+        
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            body {
+                font-size: 0.9rem;
+            }
+            
+            .alert {
+                text-align: center;
+                padding: 1rem 0.75rem;
+            }
+            
+            .container {
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
+            }
+            
+            .my-4 {
+                margin-top: 1.5rem !important;
+                margin-bottom: 1.5rem !important;
+            }
+            
+            /* Better spacing for mobile forms and cards */
+            .card {
+                margin-bottom: 1rem;
+            }
+            
+            .form-control {
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+            
+            .btn {
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+        
+        /* Extra small devices */
+        @media (max-width: 480px) {
+            .container {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+            
+            .my-4 {
+                margin-top: 1rem !important;
+                margin-bottom: 1rem !important;
+            }
+            
+            .alert {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.9rem;
+            }
+            
+            /* Stack columns on very small screens */
+            .row > [class*="col-"] {
+                margin-bottom: 1rem;
+            }
+            
+            /* Make buttons full width on very small screens when needed */
+            .btn-block-mobile {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+        }
+        
+        /* Tablet optimizations */
+        @media (min-width: 769px) and (max-width: 992px) {
+            .container {
+                max-width: 750px;
+            }
+        }
+        
+        /* Large screens */
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1140px;
+            }
+        }
+        
+        /* Extra large screens */
+        @media (min-width: 1400px) {
+            .container {
+                max-width: 1320px;
+            }
+        }
+        
+        /* Accessibility improvements */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* Print styles */
+        @media print {
+            .alert {
+                display: none !important;
+            }
+            
+            .my-4 {
+                margin: 1rem 0 !important;
+            }
+            
+            body {
+                font-size: 12pt;
+            }
+        }
+        
+        /* High DPI displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            body {
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+        }
+    </style>
+</head>
 
-  <body>
+<body>
     <%- include('../includes/navbar') %>
-<% if (success && success.length > 0) { %>
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
-    <%= success %>
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-  </div>
-<% }if (error && error.length > 0) { %>
-  <div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <%= error %>
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-  </div>
-<% } %>
-
-
-
+    
+    <% if (success && success.length > 0) { %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <%= success %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% } %>
+    
+    <% if (error && error.length > 0) { %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <%= error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% } %>
 
     <div class="container my-4">
-      <%- body %>
+        <%- body %>
     </div>
 
     <%- include('../includes/footer') %>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+    
+    <!-- Responsive JavaScript enhancements -->
+    <script>
+        // Auto-hide alerts after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    if (alert && alert.classList.contains('show')) {
+                        const bsAlert = new bootstrap.Alert(alert);
+                        bsAlert.close();
+                    }
+                }, 5000);
+            });
+        });
+        
+        // Handle responsive navigation if needed
+        window.addEventListener('resize', function() {
+            // Add any responsive JavaScript functionality here
+            if (window.innerWidth < 768) {
+                // Mobile-specific JavaScript
+                document.body.classList.add('mobile-view');
+            } else {
+                document.body.classList.remove('mobile-view');
+            }
+        });
+        
+        // Initial check for mobile
+        if (window.innerWidth < 768) {
+            document.body.classList.add('mobile-view');
+        }
+    </script>
+</body>
 </html>
