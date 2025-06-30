@@ -4,29 +4,35 @@
   <!-- Listing Card -->
   <div class="card shadow mx-auto" style="max-width: 700px;">
     <img
-    <img
-  src="<%= typeof listing.image === 'string' ? listing.image : (listing.image?.path || 'https://via.placeholder.com/700x400?text=No+Image') %>"
-  class="card-img-top"
-  alt="<%= listing.title %>"
-  onerror="this.onerror=null; this.src='https://via.placeholder.com/700x400?text=No+Image';"
-  style="height: 350px; object-fit: cover;"
-/>
+      src="<%= typeof listing.image === 'string' ? listing.image : (listing.image?.path || 'https://via.placeholder.com/700x400?text=No+Image') %>"
+      class="card-img-top"
+      alt="<%= listing.title %>"
+      onerror="this.onerror=null; this.src='https://via.placeholder.com/700x400?text=No+Image';"
+      style="height: 350px; object-fit: cover;"
+    />
 
     <div class="card-body">
       <h3 class="card-title"><%= listing.title %></h3>
-      <p class="text-muted mb-2">Hosted by <strong><%= listing.author?.username || "Unknown" %></strong></p>
+      <p class="text-muted mb-2">
+        Hosted by <strong><%= listing.author?.username || "Unknown" %></strong>
+        <% if (currentUser && listing.author && String(listing.author._id) === String(currentUser._id)) { %>
+          <span class="badge bg-info text-dark ms-2">You are the host</span>
+        <% } %>
+      </p>
       <p><%= listing.description %></p>
       <p><strong>₹<%= listing.price.toLocaleString("en-IN") %></strong> / night</p>
-      <p class="text-muted"><i class="fa-solid fa-location-dot me-1"></i><%= listing.location %>, <%= listing.country %></p>
+      <p class="text-muted">
+        <i class="fa-solid fa-location-dot me-1"></i><%= listing.location %>, <%= listing.country %>
+      </p>
     </div>
 
-    <% if (currentUser && listing.author && listing.author._id.equals(currentUser)) { %>
-    <div class="card-footer d-flex justify-content-between">
-      <a href="/listings/<%= listing._id %>/edit" class="btn btn-warning">Edit</a>
-      <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" onsubmit="return confirm('Are you sure you want to delete this listing?');">
-        <button class="btn btn-danger">Delete</button>
-      </form>
-    </div>
+    <% if (currentUser && listing.author && String(listing.author._id) === String(currentUser._id)) { %>
+      <div class="card-footer d-flex justify-content-between">
+        <a href="/listings/<%= listing._id %>/edit" class="btn btn-warning">Edit</a>
+        <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" onsubmit="return confirm('Are you sure you want to delete this listing?');">
+          <button class="btn btn-danger">Delete</button>
+        </form>
+      </div>
     <% } %>
   </div>
 
@@ -47,13 +53,15 @@
             <small class="text-muted d-block">By: <%= review.author?.username || "Anonymous" %></small>
           </div>
 
-          <% if (currentUser && review.author && review.author._id.equals(currentUser)) { %>
+          <% if (currentUser && review.author && String(review.author._id) === String(currentUser._id)) { %>
             <form method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" onsubmit="return confirm('Are you sure you want to delete this review?');">
               <button class="btn btn-sm btn-outline-danger">Delete</button>
             </form>
           <% } %>
         </div>
       <% }) %>
+    <% } else { %>
+      <p class="text-muted">No reviews yet. Be the first to write one!</p>
     <% } %>
   </div>
 

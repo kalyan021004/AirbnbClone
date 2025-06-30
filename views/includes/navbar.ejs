@@ -1,85 +1,41 @@
-<nav class="navbar bg-light border-bottom sticky-top py-2">
-  <div class="container-fluid d-flex flex-wrap align-items-center justify-content-between">
-    <!-- Brand -->
-    <a class="navbar-brand fs-4" href="/main">
-      <i class="fa-regular fa-compass"></i> StayEasy
-    </a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom sticky-top py-2">
+  <div class="container-fluid">
 
-    <!-- Left Links -->
-    <ul class="navbar-nav flex-row flex-wrap gap-3 me-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="/listings">All Places</a>
-      </li>
+    <!-- Left: Brand and Links -->
+    <div class="d-flex align-items-center gap-3">
+      <a class="navbar-brand fs-4" href="/main">
+        <i class="fa-regular fa-compass"></i> StayEasy
+      </a>
+      <a class="nav-link" href="/listings">All Places</a>
       <% if (currentUser) { %>
-      <li class="nav-item">
         <a class="nav-link" href="/listings/new">Add New</a>
-      </li>
       <% } %>
-      <% if (!currentUser) { %>
-      <li class="nav-item">
-        <a class="nav-link" href="/signin">Sign In</a>
-      </li>
-      <li class="nav-item">
-        <a class="btn btn-outline-primary px-3" href="/signup">Sign Up</a>
-      </li>
-      <% } %>
-    </ul>
+    </div>
 
+    <!-- Center: Search Bar (visible only for logged in users) -->
     <% if (currentUser) { %>
-    <!-- Search Bar -->
-    <form class="d-flex mx-3" action="/listings/search" method="GET" style="max-width: 300px; flex: 1 1 auto;">
-      <input class="form-control me-2" type="search" name="q" placeholder="Search listings" />
+    <form class="d-none d-lg-flex mx-auto w-50" action="/listings/search" method="GET">
+      <input class="form-control me-2" type="search" name="q" placeholder="Search listings">
       <button class="btn btn-outline-success" type="submit">
         <i class="fas fa-search"></i>
       </button>
     </form>
-
-    <!-- Profile Dropdown -->
-    <div class="dropdown ms-2">
-      <a class="d-flex align-items-center dropdown-toggle text-decoration-none" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <div class="rounded-circle bg-primary text-white fw-bold d-flex align-items-center justify-content-center me-2"
-             style="width: 32px; height: 32px; font-size: 14px;">
-          <% if (currentUser.profilePicture) { %>
-            <img src="<%= currentUser.profilePicture %>" alt="Profile" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
-          <% } else { %>
-            <%= currentUser.username ? currentUser.username.charAt(0).toUpperCase() : 'U' %>
-          <% } %>
-        </div>
-        <span class="d-none d-sm-inline"><%= currentUser.username %></span>
-      </a>
-
-      <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="profileDropdown">
-        <li class="dropdown-header px-3 py-3">
-          <div class="d-flex align-items-center">
-            <div class="rounded-circle bg-primary text-white fw-bold d-flex align-items-center justify-content-center me-3"
-                 style="width: 48px; height: 48px; font-size: 18px;">
-              <% if (currentUser.profilePicture) { %>
-                <img src="<%= currentUser.profilePicture %>" alt="Profile" class="rounded-circle" style="width: 48px; height: 48px; object-fit: cover;">
-              <% } else { %>
-                <%= currentUser.username ? currentUser.username.charAt(0).toUpperCase() : 'U' %>
-              <% } %>
-            </div>
-            <div>
-              <div class="fw-bold fs-6"><%= currentUser.username %></div>
-              <small class="text-muted"><%= currentUser.email || 'No email' %></small>
-            </div>
-          </div>
-        </li>
-        <li><hr class="dropdown-divider my-2"></li>
-        <li><a class="dropdown-item py-2 px-3" href="/profile"><i class="fas fa-user me-2"></i>View Profile</a></li>
-        <li><a class="dropdown-item py-2 px-3" href="/profile/settings"><i class="fas fa-cog me-2"></i>Settings</a></li>
-        <li><a class="dropdown-item py-2 px-3" href="/listings/my-listings"><i class="fas fa-home me-2"></i>My Listings</a></li>
-        <li><a class="dropdown-item py-2 px-3" href="/bookings"><i class="fas fa-calendar-alt me-2"></i>My Bookings</a></li>
-        <li><hr class="dropdown-divider my-2"></li>
-        <li>
-          <form action="/logout" method="POST" class="d-inline w-100">
-            <button class="dropdown-item text-danger py-2 px-3 w-100 text-start border-0 bg-transparent" type="submit">
-              <i class="fas fa-sign-out-alt me-2"></i>Logout
-            </button>
-          </form>
-        </li>
-      </ul>
-    </div>
     <% } %>
+
+    <!-- Right: Auth/Profile -->
+    <div class="d-flex align-items-center ms-auto gap-3">
+      <% if (!currentUser) { %>
+        <a class="nav-link" href="/signin">Sign In</a>
+        <a class="btn btn-outline-primary" href="/signup">Sign Up</a>
+      <% } else { %>
+        <span class="fw-bold text-primary"><%= currentUser.username %></span>
+        <form action="/logout" method="POST" class="m-0">
+          <button class="btn btn-outline-danger" type="submit">
+            <i class="fas fa-sign-out-alt me-1"></i> Logout
+          </button>
+        </form>
+      <% } %>
+    </div>
+
   </div>
 </nav>
