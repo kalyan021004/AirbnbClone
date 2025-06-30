@@ -1,13 +1,80 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm border-bottom sticky-top py-3">
   <div class="container-fluid px-4">
-    <!-- Left: Brand and Navigation Links -->
+    <!-- Left: Brand -->
     <div class="d-flex align-items-center">
       <a class="navbar-brand fs-4 fw-bold text-primary me-4" href="/main">
         <i class="fa-regular fa-compass me-2"></i>StayEasy
       </a>
+    </div>
+
+    <!-- Mobile: Icons and Toggle (shown only on mobile) -->
+    <div class="d-flex align-items-center gap-2 ms-auto d-lg-none">
+      <% if (currentUser) { %>
+       
+        
+        <!-- Search Icon -->
+        <button class="btn btn-light rounded-circle p-2 d-flex align-items-center justify-content-center" 
+                type="button" 
+                data-bs-toggle="collapse" 
+                data-bs-target="#mobileSearch" 
+                onclick="setTimeout(() => document.getElementById('mobileSearchInput').focus(), 100)"
+                style="width: 40px; height: 40px;">
+          <i class="fas fa-search text-primary"></i>
+        </button>
+        
+        <!-- Profile Icon -->
+        <div class="dropdown">
+          <button class="btn btn-light rounded-circle p-2 d-flex align-items-center justify-content-center dropdown-toggle border-0" 
+                  type="button" 
+                  id="mobileProfileDropdown" 
+                  data-bs-toggle="dropdown" 
+                  aria-expanded="false"
+                  style="width: 40px; height: 40px;">
+            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" 
+                 style="width: 24px; height: 24px; font-size: 12px; font-weight: 600;">
+              <%= currentUser.username.charAt(0).toUpperCase() %>
+            </div>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end mt-2 border-0 shadow-lg rounded-3" 
+              aria-labelledby="mobileProfileDropdown"
+              style="min-width: 200px;">
+            <li>
+              <a class="dropdown-item py-3 px-4 d-flex align-items-center gap-3" href="/profile">
+                <i class="fas fa-user text-muted" style="width: 16px;"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item py-3 px-4 d-flex align-items-center gap-3" href="/profile/settings">
+                <i class="fas fa-cog text-muted" style="width: 16px;"></i>
+                <span>Settings</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item py-3 px-4 d-flex align-items-center gap-3" href="/listings/my">
+                <i class="fas fa-home text-muted" style="width: 16px;"></i>
+                <span>My Listings</span>
+              </a>
+            </li>
+            <li><hr class="dropdown-divider my-2"></li>
+            <li>
+              <form action="/logout" method="POST" class="d-inline w-100">
+                <button class="dropdown-item py-3 px-4 d-flex align-items-center gap-3 text-danger border-0 bg-transparent w-100 text-start" 
+                        type="submit">
+                  <i class="fas fa-sign-out-alt" style="width: 16px;"></i>
+                  <span>Logout</span>
+                </button>
+              </form>
+            </li>
+          </ul>
+        </div>
+      <% } else { %>
+        <!-- Sign In/Up for mobile when not logged in -->
+        <a class="btn btn-outline-primary btn-sm rounded-pill px-3" href="/signin">Sign In</a>
+      <% } %>
       
       <!-- Mobile toggle button -->
-      <button class="navbar-toggler border-0 ms-auto d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler border-0 ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
     </div>
@@ -32,6 +99,7 @@
                  type="search" 
                  name="q" 
                  placeholder="Search destinations, properties..." 
+                 autocomplete="off"
                  style="box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
           <button class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-3 p-0 border-0" 
                   type="submit" 
@@ -99,21 +167,25 @@
         <% } %>
       </div>
 
-      <!-- Mobile Search Bar -->
+      <!-- Mobile Search Bar (Collapsible) -->
       <% if (currentUser) { %>
-      <form class="d-lg-none mt-3 w-100" action="/listings/search" method="GET">
-        <div class="input-group">
-          <input class="form-control border-0 bg-light rounded-pill ps-4 pe-5" 
-                 type="search" 
-                 name="q" 
-                 placeholder="Search destinations, properties...">
-          <button class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-3 p-0 border-0" 
-                  type="submit" 
-                  style="z-index: 10;">
-            <i class="fas fa-search text-muted"></i>
-          </button>
-        </div>
-      </form>
+      <div class="collapse d-lg-none mt-3" id="mobileSearch">
+        <form class="w-100" action="/listings/search" method="GET">
+          <div class="input-group">
+            <input class="form-control border-0 bg-light rounded-pill ps-4 pe-5" 
+                   type="search" 
+                   name="q" 
+                   id="mobileSearchInput"
+                   placeholder="Search destinations, properties..."
+                   autocomplete="off">
+            <button class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-3 p-0 border-0" 
+                    type="submit" 
+                    style="z-index: 10;">
+              <i class="fas fa-search text-muted"></i>
+            </button>
+          </div>
+        </form>
+      </div>
       <% } %>
     </div>
   </div>
