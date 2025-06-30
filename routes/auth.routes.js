@@ -49,7 +49,7 @@ router.post('/signin', async (req, res) => {
       res.redirect('/main');
     } else {
       req.flash('error', 'Invalid credentials');
-      res.redirect('/signin');
+      res.redirect('/main');
     }
   } catch (error) {
     console.error('Login error:', error);

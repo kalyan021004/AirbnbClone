@@ -1,71 +1,132 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const Listing = require("../models/listings");
 const { isLoggedIn, isOwner } = require("../middleware");
 const escapeRegExp = require("lodash.escaperegexp");
 
 const router = express.Router();
 
-// Index Route
+// Index Route - main page
 router.get('/main', isLoggedIn, (req, res) => {
   console.log('Current user:', req.user);
   res.render('listings/main', { currentUser: req.user });
 });
 
+router.get('/listings/filter', async (req, res, next) => {
+  try {
+    const { country, minPrice, maxPrice } = req.query;
+    let query = {};
+
+    if (country) {
+      query.country = new RegExp(country, 'i'); // Use country field, not location
+    }
+
+    if (minPrice || maxPrice) {
+      query.price = {};
+      if (minPrice) query.price.$gte = parseInt(minPrice);
+      if (maxPrice) query.price.$lte = parseInt(maxPrice);
+    }
+
+    console.log("Filter Query:", query);
+
+    const filteredListings = await Listing.find(query);
+
+    console.log("Filtered listings count:", filteredListings.length);
+
+    res.render('listings/index', {
+      allListings: filteredListings,
+      country, minPrice, maxPrice,
+      currentUser: req.user
+    });
+  } catch (err) {
+    console.error("Error filtering listings:", err);
+    next(err);
+  }
+});
+
+
+
 // Show all listings
-router.get("/listings", async (req, res) => {
-  const allListings = await Listing.find({});
-  res.render("listings/index.ejs", { 
-    allListings, 
-    currentUser: req.user 
-  });
+router.get("/listings", async (req, res, next) => {
+  try {
+    const allListings = await Listing.find({});
+    res.render("listings/index.ejs", {
+      allListings,
+      currentUser: req.user
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 
 // New listing form
 router.get("/listings/new", isLoggedIn, (req, res) => {
-  res.render("listings/new.ejs", { 
-    currentUser: req.user 
+  res.render("listings/new.ejs", {
+    currentUser: req.user
   });
 });
 
 // Search listings
-router.get("/listings/search", async (req, res) => {
-  const query = req.query.q;
-  if (!query) {
-    req.flash("error", "Please enter a search term.");
-    return res.redirect("/listings");
+router.get("/listings/search", async (req, res, next) => {
+  try {
+    const query = req.query.q;
+    if (!query) {
+      req.flash("error", "Please enter a search term.");
+      return res.redirect("/listings");
+    }
+
+    const listings = await Listing.find({
+      $or: [
+        { title: { $regex: escapeRegExp(query), $options: "i" } },
+        { description: { $regex: escapeRegExp(query), $options: "i" } },
+        { location: { $regex: escapeRegExp(query), $options: "i" } }
+      ]
+    });
+
+    res.render("listings/index.ejs", {
+      allListings: listings,
+      currentUser: req.user
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Show specific listing with ObjectId validation
+router.get("/listings/:id", async (req, res, next) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    const err = new Error("Invalid listing ID");
+    err.status = 400;
+    return next(err);
   }
 
-  const listings = await Listing.find({
-    $or: [
-      { title: { $regex: escapeRegExp(query), $options: "i" } },
-      { description: { $regex: escapeRegExp(query), $options: "i" } },
-      { location: { $regex: escapeRegExp(query), $options: "i" } }
-    ]
-  });
+  try {
+    const listing = await Listing.findById(id)
+      .populate({
+        path: "reviews",
+        populate: { path: "author" },
+      })
+      .populate("author");
 
-  res.render("listings/index.ejs", { 
-    allListings: listings, 
-    currentUser: req.user 
-  });
+    if (!listing) {
+      const err = new Error("Listing not found");
+      err.status = 404;
+      return next(err);
+    }
+
+    res.render("listings/show.ejs", {
+      listing,
+      currentUser: req.user
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 
-// Show specific listing
-router.get("/listings/:id", async (req, res) => {
-  let { id } = req.params;
-  const listing = await Listing.findById(id)
-    .populate({
-      path: "reviews",
-      populate: { path: "author" },
-    })
-    .populate("author");
-
-  res.render("listings/show.ejs", { 
-    listing, 
-    currentUser: req.user 
-  });
-});
-
-router.post('/listings', isLoggedIn, async (req, res) => {
+// Create new listing
+router.post('/listings', isLoggedIn, async (req, res, next) => {
   try {
     console.log("Uploaded file info:", JSON.stringify(req.file, null, 2));
 
@@ -86,31 +147,67 @@ router.post('/listings', isLoggedIn, async (req, res) => {
 });
 
 // Edit listing form
-router.get("/listings/:id/edit", isLoggedIn, isOwner, async (req, res) => {
-  let { id } = req.params;
-  const listing = await Listing.findById(id);
-  res.render("listings/edit.ejs", { 
-    listing, 
-    currentUser: req.user 
-  });
+router.get("/listings/:id/edit", isLoggedIn, isOwner, async (req, res, next) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    const err = new Error("Invalid listing ID");
+    err.status = 400;
+    return next(err);
+  }
+
+  try {
+    const listing = await Listing.findById(id);
+    if (!listing) {
+      const err = new Error("Listing not found");
+      err.status = 404;
+      return next(err);
+    }
+    res.render("listings/edit.ejs", {
+      listing,
+      currentUser: req.user
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 
 // Update a listing
-router.put("/listings/:id", isLoggedIn, isOwner, async (req, res) => {
-  let { id } = req.params;
-  await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+router.put("/listings/:id", isLoggedIn, isOwner, async (req, res, next) => {
+  const { id } = req.params;
 
-  req.flash("success", "Successfully updated the listing!");
-  res.redirect(`/listings/${id}`);
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    const err = new Error("Invalid listing ID");
+    err.status = 400;
+    return next(err);
+  }
+
+  try {
+    await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+    req.flash("success", "Successfully updated the listing!");
+    res.redirect(`/listings/${id}`);
+  } catch (err) {
+    next(err);
+  }
 });
 
 // Delete a listing
-router.delete("/listings/:id", isLoggedIn, isOwner, async (req, res) => {
-  let { id } = req.params;
-  await Listing.findByIdAndDelete(id);
+router.delete("/listings/:id", isLoggedIn, isOwner, async (req, res, next) => {
+  const { id } = req.params;
 
-  req.flash("success", "Successfully deleted the listing!");
-  res.redirect("/listings");
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    const err = new Error("Invalid listing ID");
+    err.status = 400;
+    return next(err);
+  }
+
+  try {
+    await Listing.findByIdAndDelete(id);
+    req.flash("success", "Successfully deleted the listing!");
+    res.redirect("/listings");
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = router;

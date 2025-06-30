@@ -1,6 +1,126 @@
 <% layout('layouts/boilerplate.ejs') %>
 
-<div class="container mt-4">
-  <h2>Settings</h2>
-  <p>This section is for future account/password settings.</p>
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-sm">
+        <div class="card-header bg-secondary text-white text-center">
+          <h3 class="mb-0">Settings</h3>
+        </div>
+        <div class="card-body">
+
+          <!-- Update Profile Info Form -->
+          <form action="/profile/settings" method="POST" class="mb-4">
+            <h5>Update Profile Info</h5>
+            <% if (errors && errors.profile) { %>
+              <div class="alert alert-danger"><%= errors.profile %></div>
+            <% } %>
+            <div class="mb-3">
+              <label for="username" class="form-label fw-bold">Username</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                class="form-control"
+                value="<%= user.username %>"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="email" class="form-label fw-bold">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-control"
+                value="<%= user.email %>"
+                required
+              />
+            </div>
+
+           
+
+            <button type="submit" name="action" value="updateProfile" class="btn btn-primary w-100">
+              Save Profile Info
+            </button>
+          </form>
+
+          <hr>
+
+          <!-- Change Password Form -->
+          <form action="/profile/settings" method="POST" class="mb-4">
+            <h5>Change Password</h5>
+            <% if (errors && errors.password) { %>
+              <div class="alert alert-danger"><%= errors.password %></div>
+            <% } %>
+            <div class="mb-3">
+              <label for="currentPassword" class="form-label fw-bold">Current Password</label>
+              <input
+                type="password"
+                id="currentPassword"
+                name="currentPassword"
+                class="form-control"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="newPassword" class="form-label fw-bold">New Password</label>
+              <input
+                type="password"
+                id="newPassword"
+                name="newPassword"
+                class="form-control"
+                required
+                minlength="6"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="confirmNewPassword" class="form-label fw-bold">Confirm New Password</label>
+              <input
+                type="password"
+                id="confirmNewPassword"
+                name="confirmNewPassword"
+                class="form-control"
+                required
+                minlength="6"
+              />
+            </div>
+
+            <button type="submit" name="action" value="changePassword" class="btn btn-warning w-100">
+              Change Password
+            </button>
+          </form>
+
+          <hr>
+
+          <!-- Preferences -->
+          <h5>Preferences</h5>
+          <form action="/profile/settings/preferences" method="POST">
+            <div class="form-check mb-3">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="emailNotifications"
+                name="emailNotifications"
+                <%= user.emailNotifications ? 'checked' : '' %>
+              />
+              <label class="form-check-label" for="emailNotifications">
+                Receive email notifications
+              </label>
+            </div>
+
+            
+
+            <button type="submit" class="btn btn-success w-100">Save Preferences</button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+

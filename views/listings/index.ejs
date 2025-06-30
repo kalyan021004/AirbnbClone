@@ -1,6 +1,47 @@
 <% layout('layouts/boilerplate.ejs') %>
 
-<h3 class="text-center my-4">All Listings</h3>
+<h3 class=" my-4">All Places</h3>
+<section class="py-4 bg-white">
+  <div class="container">
+    <form action="/listings/filter" method="GET" class="d-flex flex-wrap align-items-end gap-3">
+
+      <!-- Country Dropdown -->
+      <div class="flex-grow-1" style="min-width: 150px;">
+        <label for="country" class="form-label fw-bold">Country</label>
+        <select name="country" id="country" class="form-select">
+          <option value="">All Countries</option>
+          <option value="Italy">Italy</option>
+          <option value="United States">United States</option>
+          <option value="Japan">Japan</option>
+          <option value="USA">USA</option>
+          <option value="Indonesia">Indonesia</option>
+          <option value="Australia">Australia</option>
+        </select>
+      </div>
+
+      <!-- Min Price -->
+      <div style="width: 120px;">
+        <label for="minPrice" class="form-label fw-bold">Min Price ($)</label>
+        <input type="number" name="minPrice" id="minPrice" class="form-control" placeholder="e.g., 50">
+      </div>
+
+      <!-- Max Price -->
+      <div style="width: 120px;">
+        <label for="maxPrice" class="form-label fw-bold">Max Price ($)</label>
+        <input type="number" name="maxPrice" id="maxPrice" class="form-control" placeholder="e.g., 500">
+      </div>
+
+      <!-- Filter Button -->
+      <div style="width: 140px;">
+        <button type="submit" class="btn btn-danger w-100 fw-bold">
+          Apply Filters
+        </button>
+      </div>
+
+    </form>
+  </div>
+</section>
+
 
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
   <% for (let listing of allListings) { %>

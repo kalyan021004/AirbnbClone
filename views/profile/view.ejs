@@ -1,9 +1,43 @@
 <% layout('layouts/boilerplate.ejs') %>
 
-<div class="container mt-4">
-  <h2>Your Profile</h2>
-  <p><strong>Username:</strong> <%= user.username %></p>
-  <p><strong>Email:</strong> <%= user.email %></p>
-  <p><strong>Bio:</strong> <%= user.bio || 'N/A' %></p>
-  <a href="/profile/edit" class="btn btn-warning mt-3">Edit Profile</a>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white text-center">
+          <h3 class="mb-0">Your Profile</h3>
+        </div>
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <!-- Left side: User Info -->
+            <div class="flex-grow-1">
+  
+              <ul class="list-group list-group-flush mb-3">
+                <li class="list-group-item px-0"><strong>Username:</strong> <%= user.username %></li>
+              </ul>
+
+              <ul class="list-group list-group-flush mb-3">
+                <li class="list-group-item px-0"><strong>Email:</strong> <%= user.email %></li>
+              </ul>
+
+              <div>
+                <a href="/profile/settings" class="btn btn-secondary">Settings</a>
+              </div>
+            </div>
+
+            <!-- Right side: Profile Picture -->
+            <div class="ms-4">
+              <img
+                src="<%= user.profilePicture || 'https://via.placeholder.com/150?text=Profile' %>"
+                alt="Profile Picture"
+                class="rounded-circle"
+                style="width: 120px; height: 120px; object-fit: cover;"
+                onerror="this.src='https://via.placeholder.com/150?text=Profile';"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

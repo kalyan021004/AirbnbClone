@@ -141,7 +141,10 @@ app.use((req, res) => {
     error: {}
   });
 });
-
+app.use((err, req, res, next) => {
+  const statusCode = err.status || 500;
+  res.status(statusCode).render("error", { err });
+});
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
