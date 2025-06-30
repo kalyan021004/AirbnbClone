@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom sticky-top py-2">
   <div class="container-fluid">
 
-    <!-- Left: Brand and Links -->
+    <!-- Left: Brand and Navigation Links -->
     <div class="d-flex align-items-center gap-3">
       <a class="navbar-brand fs-4" href="/main">
         <i class="fa-regular fa-compass"></i> StayEasy
@@ -12,7 +12,7 @@
       <% } %>
     </div>
 
-    <!-- Center: Search Bar (visible only for logged in users) -->
+    <!-- Center: Search Bar -->
     <% if (currentUser) { %>
     <form class="d-none d-lg-flex mx-auto w-50" action="/listings/search" method="GET">
       <input class="form-control me-2" type="search" name="q" placeholder="Search listings">
@@ -28,12 +28,24 @@
         <a class="nav-link" href="/signin">Sign In</a>
         <a class="btn btn-outline-primary" href="/signup">Sign Up</a>
       <% } else { %>
-        <span class="fw-bold text-primary"><%= currentUser.username %></span>
-        <form action="/logout" method="POST" class="m-0">
-          <button class="btn btn-outline-danger" type="submit">
-            <i class="fas fa-sign-out-alt me-1"></i> Logout
+        <div class="dropdown">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user me-1"></i> <%= currentUser.username %>
           </button>
-        </form>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+            <li><a class="dropdown-item" href="/profile">My Profile</a></li>
+            <li><a class="dropdown-item" href="/profile/favorites">Favorites</a></li>
+            <li><a class="dropdown-item" href="/profile/settings">Settings</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <form action="/logout" method="POST" class="d-inline">
+                <button class="dropdown-item text-danger" type="submit">
+                  <i class="fas fa-sign-out-alt me-1"></i> Logout
+                </button>
+              </form>
+            </li>
+          </ul>
+        </div>
       <% } %>
     </div>
 
